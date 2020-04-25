@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use App\User;
+use Illuminate\Support\Facades\Gate;
 class CategoryController extends Controller
 {
     /**
@@ -17,7 +19,7 @@ class CategoryController extends Controller
         $this->middleware('auth');
     }
     public function index()
-    {
+    {   //to show all the categories
         $Categories =  Category::pluck('name');
         return \view('Categories.index',\compact('Categories'));
     }
@@ -28,8 +30,31 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    { 
+        // show form of the create category
         return \view('Categories.create');
+    }
+
+    public function AddUserTOTheCategory(Request $request)
+    {
+       $data = $request->validate([
+           'email' => 'required|email|exists:App\User',
+           'Category_id' => 'required'
+          
+       ]);
+       //if(Gate::allows('before',Category::class)){
+        if($data){
+            $User =User::where('email',$data['email'])->first();//get the user
+            if(is_array($data['Category_id'])){  
+              foreach ($data['Category_id'] as $value) {
+                  $User->categoriesWork()->attach($value);
+              }
+              return \redirect()->back();
+            }
+            $User->categoriesWork()->attach($data['Category_id']);
+            return \redirect()->back();
+         }
+       //}
     }
 
     /**
@@ -40,11 +65,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // to store category in the dataace 
+        $categoryData =$request->validate([
             'name'=>'required|unique:categories',
         ]);
+        $User = \Auth::user();
+        $request['user_id'] = $User->id;
         $Category = new Category;
-        $Category->create($request->all());
+        $CategoryId = $Category->create($request->all());
+        $User->categoriesWork()->attach($CategoryId->id);
         return \redirect(\route('Categories.index'));
     }
 

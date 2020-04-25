@@ -3,6 +3,7 @@
 
 @section('content')
 <div class="container-fluid">
+    @cannot('view', App\Category::class)
     <div class="row">
         <div>
             <ul class="nav-item">
@@ -11,6 +12,7 @@
            </div> </ul>
         </div>
     </div>
+    @endcannot
     <div class="container">
         <h5 class="">Our Categories</h5>
         <div class="row row-cols-1 row-cols-md-4">

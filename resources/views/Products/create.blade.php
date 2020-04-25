@@ -36,13 +36,17 @@
                 </div>
           <div class="form-group">
               <label for="select">Category Name</label>
-              <select required name='category_id' class="form-control" id="select">
-                  @forelse ($category as $key => $name)
-                  <option   value="{{$key}}">{{$name}}</option>
+              @if (!$category->isEmpty())
+              <select required name='Category_id' class="form-control" id="select">
+                  @forelse ($category as $value)
+                  <option   value="{{$value->id}}">{{$value->name}}</option>
                   @empty
                       
                   @endforelse
               </select >
+              @else
+              <div><p class="">No Category For Naw</p></div> 
+              @endif
           </div>
           <button type="submit" class="btn btn-primary">Save Product</button>
       </form>

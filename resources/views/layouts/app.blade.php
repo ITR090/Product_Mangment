@@ -199,24 +199,30 @@
            @endcan
            
            
-          {{-- <li class="nav-item has-treeview">
+          <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
+              <i class="fas fa-user pr-2"></i>
               <p>
-                Layout Options
+                My Account
                 <i class="fas fa-angle-left right"></i>
-                <span class="badge badge-info right">6</span>
+                <span class="badge badge-info right"></span>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Top Navigation</p>
+                <a href="{{route('My_Account')}}" class="nav-link">
+                  <i class="fas fa-lock pr-2"></i>
+                  <p>My Account Information</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('WorkingCateories')}}" class="nav-link">
+                  <i class="fas fa-lock pr-2"></i>
+                  <p>My Categories</p>
                 </a>
               </li>
             </ul>
-          </li>           --}}
+          </li>          
           {{-- <li class="nav-header">EXAMPLES</li> --}}
           {{-- <li class="nav-item">
             <a href="pages/calendar.html" class="nav-link">
@@ -251,9 +257,12 @@
     <!-- /.sidebar -->
   </aside>
 @endauth
+@guest
 <div class="py-4">
   @yield('name1')
-</div>
+</div>    
+@endguest
+
   <!-- Content Wrapper. Contains page content -->
        @auth
        <div class="content-wrapper">
@@ -272,6 +281,7 @@
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
+    
   </aside>
   <!-- /.control-sidebar -->
 

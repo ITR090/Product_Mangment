@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Product;
 use Illuminate\Support\Facades\Auth;
-
+use App\Notifications\ProductNotification;
 class ProductController extends Controller
 {
     /**
@@ -43,9 +43,12 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $category = Category::pluck('name', 'id');
-        $category_id = Category::select('id')->get(); //this is for select category
-        return \view('Products.create', \compact('category', 'category_id'));
+        $User = \Auth::user();
+        $category = $User->categoriesWork;
+        // dd($category);
+        // $category = Category::pluck('name', 'id');
+        // $category_id = Category::select('id')->get(); //this is for select category
+        return \view('Products.create', \compact('category'));
     }
 
     /**
@@ -56,8 +59,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->file());
-        // dd($request->category_name);
+        dd($request->file('image'));
         $request->validate([
             'name' => 'required',
             'description' => 'required',
@@ -157,8 +159,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $Product)
     {
-
-        $Product->delete();
-        return \redirect()->back();
+        $User= \Auth::user();
+        if($Product->delete()){
+            $User->notify(new ProductNotification($Product));
+            return \redirect()->back();
+        }
     }
 }

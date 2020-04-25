@@ -48,7 +48,9 @@
             @endforelse
         </select >
     </div>
-    <button type="submit" class="btn btn-primary">Update Product</button>
+    <button type="submit" class="btn btn-warning">Update Product</button>
     </form>
+    <div class="mt-3"><a href="{{route('Products.index')}}" class="btn btn-primary">Back</a></div>
 </div>
+
 @endsection

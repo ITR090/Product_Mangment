@@ -10,21 +10,20 @@
        </div>
    </div>
    <div class="container">
-       
-    <form action="{{route('Product')}}" method="get">
+       @if (!$category->isEmpty())
+       <form action="{{route('Product')}}" method="get">
         <select name="category_id" id="" class="form-control">
            @forelse ($category as $key => $name)
                <option value="{{$key}}">{{$name}}</option>
            @empty
-               {{'no categories'}}
            @endforelse
         </select>
-        
         <button class="btn btn-primary mt-2" type="submit">Search Products</button>
-    
-    </form>
-
-
+      </form>
+            
+        @else
+        <div><h5 class="">No Products for Search Now</h5></div>         
+       @endif
 </div>
 </div>
 @endsection

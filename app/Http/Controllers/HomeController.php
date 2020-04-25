@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 use App\Product;
 class HomeController extends Controller
 {
@@ -27,4 +27,5 @@ class HomeController extends Controller
         $newProducts=$products->orderBy('created_at','DESC')->get();
         return view('home',compact('newProducts'));
     }
+    
 }

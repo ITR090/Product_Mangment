@@ -6,9 +6,10 @@
     <div class="container">
            <h5>New Products</h5>
            <div class="row">
-               <div class="">
-                <div class="card-group">
+               
+               
                     @forelse ($newProducts as $newProduct)
+                    <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="card">
                      <img src='/storage/Images/{{$newProduct->imege}}' class="card-img-top" alt="...">
                      <div class="card-body">
@@ -19,10 +20,8 @@
                    </div>
                     @empty
                         {{'No New Products'}} 
+                    </div>
                     @endforelse
-                    
-                   </div>
-               </div>
            </div>
     </div>
 @endsection

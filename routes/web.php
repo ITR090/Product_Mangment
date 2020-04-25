@@ -31,6 +31,10 @@ Route::resource('Comments','CommentController');
 Route::resource('Categories','CategoryController');
 Route::resource('Categories','CategoryController');
 Route::resource('Users','UserController');
+Route::get('WorkingCateories','UserController@OwnerCategories')->name('WorkingCateories');
+Route::get('My_Account','UserController@My_Account')->name('My_Account');
+
+Route::post('AddUser','CategoryController@AddUserTOTheCategory')->name('AddUser');
 // Route::get('Categories','CategoryController@index')->name('Categories.index');
 // Route::get('Categories','CategoryController@create')->name('Categories.create');
 //Route::get('/Comment','CommentController@create')->name('Comment');

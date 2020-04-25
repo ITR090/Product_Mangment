@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Role;
+use App\Category;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -21,26 +22,27 @@ class UserController extends Controller
 
         $this->middleware('auth');
     }
+    public function My_Account()
+    {
+        $User = \Auth::user();
+        return view('Users.My_Account.index',compact('User'));
+    }
     public function index()
     {
-        // $user = User::find(3)->roles;
+        return view('Users.index');
+    }
 
-        // dd($user);
-        // $users= User::has('roles')->get();
-        // dd($users);
-        //$usersData =$users->select('id','name','email')->get();
-
-        //  $usersRoles=$users->roles->all();
-        //  dd($usersRoles);
-        if (Gate::allows('full-primission', Auth::user())) {
-            // The current user can edit settings
-            $users = User::with('roles')->get();
-            
-           // $UserRoles = $User->roles->pluck('id')->toArray();
-            $rolesPrimissions= Role::select('id','primissions')->get()->toArray();
-            return \view('Users.index', \compact('users','rolesPrimissions'));
+    public function OwnerCategories()
+    {
+         $User = \Auth::user();
+         $WorkingCateories = $User->categoriesWork;
+        //   OwnerCategories hasMany 
+        if (Gate::allows('viewAny',Category::class)) {
+             $categories = Category::all();
+             return view('Users.Owner_Categories.index',compact('categories','WorkingCateories'));
         }
-        return \abort(401);
+        
+         return view('Users.Owner_Categories.index',compact('WorkingCateories'));
     }
 
     /**
@@ -50,13 +52,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        if (Gate::allows('full-primission', Auth::user())) {
-            // The current user can edit settings
-            //$users = User::with('roles')->get(); 
-
-            return \view('Users.create');
-        }
-        return abort(401);
+      
     }
 
     /**
@@ -67,35 +63,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if (Gate::allows('full-primission', Auth::user())) {
-            // The current user can edit settings
-            //$users = User::with('roles')->get();
-
-
-            if ($request['isAdmin']) {
-                $request['isAdmin'] = 1;
-                $request->validate([
-                    'name' => 'required|string|max:255',
-                    'email' => 'required|string|email|max:255|unique:users',
-                    'password' => 'required|string|min:8',
-                    'role_name' => 'required|string|max:255',
-                    'primissions' => 'required|string|max:255',
-                    'isAdmin' => 'required|boolean',
-                ]);
-
-                //hash password
-                $request['password'] = Hash::make($request['password']);
-
-
-                $user = new User;
-                $role = new Role;
-                $userDate = $user->create($request->only('name', 'email', 'password'));
-                $roleDate = $role->create($request->only('role_name', 'primissions'));
-                $userDate->roles()->attach($roleDate->id); //get the last id when create user
-                return \redirect(\route('Users.index'));
-            }
-        }
-        return abort(401);
+       
     }
 
     /**
@@ -106,12 +74,7 @@ class UserController extends Controller
      */
     public function show(User $User)
     {
-        if (Gate::allows('full-primission', Auth::user())) {
-            // The current user can edit settings
-            // $users = User::with('roles')->get();
-            return \view('Users.show', \compact('User'));
-        }
-        return abort(401);
+        
     }
 
     /**
@@ -122,15 +85,7 @@ class UserController extends Controller
      */
     public function edit(User $User)
     {
-        if (Gate::allows('full-primission', Auth::user())) {
-            // The current user can edit settings
-            //$users = User::with('roles')->get();
-            $UserRoles = $User->roles->pluck('id')->toArray();
-            $roles= Role::select('id','primissions')->get();
-            
-            return \view('Users.edit', \compact('User', 'UserRoles','roles'));
-        } 
-        return abort(401);
+       
     }
 
     /**
@@ -142,40 +97,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $User)
     {
-        if (Gate::allows('full-primission', Auth::user())) {
-            // The current user can edit settings
-            //$users = User::with('roles')->get();
-            //dd($request->all());
-            if ($request->only('primissions')) {
-                
-                //dd($request->primissions);
-                $User->roles()->sync($request['primissions']);
-                return redirect()->back();
-               // $User->roles()->update($request->only('primissions'));
-            }
-            if ($request->only('name', 'email')) {
-                $User->update($request->all());
-            }
-            if ($request->only('current_password', 'new_password', 'Confirm_password')) {
-                $request->validate([
-                    'current_password' => 'required|string|max:255',
-                    'new_password' => 'required|string|max:255|min:8|different:current_password',
-                    'Confirm_password' => 'required|string|max:255|min:8',
-                ]);
-                $currentPassword = $User->password; //get password form databace
-                
-                if (Hash::check($request['current_password'], $currentPassword)) {
-                    
-                    $request['password'] = Hash::make($request['new_password']);
-                   
-                    $User->update($request->only('password'));
-                } else {
-                    return response(['message' => 'this password not in data bace']);
-                }
-            }
-            return \redirect()->back();
-        }
-        return abort(401);
+        
     }
 
     /**
@@ -186,12 +108,8 @@ class UserController extends Controller
      */
     public function destroy(User $User)
     {
-        if (Gate::allows('full-primission', Auth::user())) {
-            // The current user can edit settings
-            //$users = User::with('roles')->get();
-            $User->delete();
-            return \redirect(\route('Users.index'));
-        }
-        return abort(401);
+       
     }
+
+
 }

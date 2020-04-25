@@ -10,11 +10,11 @@ class Category extends Model
     
 
     protected $fillable = [
-        'name',
+        'name','user_id','categor_id'
     ];
 
 
-    public function UsersWork()
+    public function UsersCategories()
     {
          return $this->belongsToMany(User::class,'categories_users');
     }
@@ -22,5 +22,11 @@ class Category extends Model
     public function products()
     {
          return $this->hasMany(Product::class);
+    }
+
+
+    public function User()
+    {
+        return $this->belongsTo(User::class);
     }
 }
