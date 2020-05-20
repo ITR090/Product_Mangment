@@ -21,15 +21,16 @@ class ProductController extends Controller
 
     public function ShowProductsByCategory(Request $request)
     {
-        //dd($request->all());
         $Category_id = array_values($request->all());
-        $Products = Category::find($Category_id[0])->products;
+        $Products = Category::findOrFail($Category_id[0])->products;
         return \view('Products.ProductsByCategory', \compact('Products'));
     }
 
     public function index()
     {
 
+        //dd(Auth::user()->products);
+        
         $category = Category::pluck('name', 'id');
 
         return \view('Products.index', \compact('category'));
@@ -45,9 +46,7 @@ class ProductController extends Controller
     {
         $User = \Auth::user();
         $category = $User->categoriesWork;
-        // dd($category);
-        // $category = Category::pluck('name', 'id');
-        // $category_id = Category::select('id')->get(); //this is for select category
+        //$category = Category::pluck('name', 'id');
         return \view('Products.create', \compact('category'));
     }
 
@@ -59,17 +58,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->file('image'));
+        
+        
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required|image|max:1999',
+            'image' => 'required|file|image|mimes:png,jpeg|max:1999',
             'priec' => 'required',
-            'category_id' => 'required'
+            'category_id' => 'required',
         ]);
-
+       
         // get file name with ext
         $fileNameWithExt = $request->file('image')->getClientOriginalName();
+        
         //get just file name
         $fileName = \pathinfo($fileNameWithExt, PATHINFO_FILENAME);
         // get ext file

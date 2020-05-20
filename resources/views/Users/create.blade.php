@@ -23,7 +23,7 @@
         @error('password')
               <div class="alert alert-danger mt-2">{{ $message }}</div>
           @enderror
-          <div class="form-group">
+          {{-- <div class="form-group">
             <input type="text" name="role_name" id="" class="form-control" required placeholder="Role User Name" >
         </div>
         @error('role_name')
@@ -34,14 +34,14 @@
         </div>
         @error('primissions')
               <div class="alert alert-danger mt-2">{{ $message }}</div>
-          @enderror
-          <div class="form-group form-check">
-            <input type="checkbox"  name="isAdmin" class="form-check-input" id="exampleCheck1" checked value="1">
+          @enderror --}}
+          {{-- <div class="form-group form-check">
+            <input type="checkbox"  name="isAdmin" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">isAdmin</label>
           </div>
         @error('isAdmin')
         <div class="alert alert-danger mt-2">{{ $message }}</div>
-    @enderror
+    @enderror --}}
         <button type="submit" class="btn btn-outline-success">Create User</button>
     </form>
   </div>

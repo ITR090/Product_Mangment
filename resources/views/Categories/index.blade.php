@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container-fluid">
-    @cannot('view', App\Category::class)
+    {{-- @cannot('view', App\Category::class) --}}
     <div class="row">
         <div>
             <ul class="nav-item">
@@ -12,19 +12,18 @@
            </div> </ul>
         </div>
     </div>
-    @endcannot
+    {{-- @endcannot --}}
     <div class="container">
-        <h5 class="">Our Categories</h5>
-        <div class="row row-cols-1 row-cols-md-4">
+        <h5 class="">This Is All Our Categories</h5>
+        <div class="row justify-content-center">
         @forelse ($Categories as  $Category)
-         <div class="card m-1" style="width: 18rem;">
-            <div class="card-header">
-                <h6>{{$Category}}</h6>
+            <div class="col-md-6 col-lg-3 col-sm-12">
+                <div class="card mt-2">
+                    <div class="card-header">
+                        <h6>{{$Category}}</h6>
+                    </div>
+                 </div>
             </div>
-            {{-- <div class="card-body">
-               
-            </div> --}}
-         </div>
         @empty
             {{'No Categories for now'}}
         @endforelse

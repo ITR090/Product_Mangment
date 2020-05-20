@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\User;
 use Illuminate\Support\Facades\Gate;
+use App\Notifications\UserAddItCategory;
+use Illuminate\Database\Eloquent\Collection;
 class CategoryController extends Controller
 {
     /**
@@ -38,23 +40,26 @@ class CategoryController extends Controller
     public function AddUserTOTheCategory(Request $request)
     {
        $data = $request->validate([
-           'email' => 'required|email|exists:App\User',
+           'email' => 'required|email|exists:App\User,email',
            'Category_id' => 'required'
           
        ]);
-       //if(Gate::allows('before',Category::class)){
+        
         if($data){
             $User =User::where('email',$data['email'])->first();//get the user
             if(is_array($data['Category_id'])){  
               foreach ($data['Category_id'] as $value) {
-                  $User->categoriesWork()->attach($value);
-              }
+                  $result = $User->categoriesWork()->find($value);
+                if(!$result){
+                    $User->categoriesWork()->attach($value);
+                }// end if
+            } // end for 
+              $User->notify(new UserAddItCategory());
               return \redirect()->back();
             }
-            $User->categoriesWork()->attach($data['Category_id']);
-            return \redirect()->back();
          }
-       //}
+         return \redirect()->back();
+      
     }
 
     /**
@@ -94,9 +99,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, Category $Category)
     {
-        //
+        $this->authorize('update', $Category);
+        return view('Categories.edit',compact('Category'));
     }
 
     /**
@@ -106,9 +112,18 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $Category)
     {
-        //
+        $this->authorize('update', $Category);
+       $data= $request->validate([
+            'name'=>'required|unique:categories',
+        ]);
+
+        if($Category->update($data)){
+            return \redirect()->back();
+        }
+
+
     }
 
     /**
@@ -117,8 +132,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $Category)
     {
-        //
+        $this->authorize('delete', $Category);
+        if($Category->delete()){
+            return \redirect()->back();
+        }
     }
 }

@@ -37,11 +37,10 @@
           <div class="form-group">
               <label for="select">Category Name</label>
               @if (!$category->isEmpty())
-              <select required name='Category_id' class="form-control" id="select">
+              <select required name='category_id' class="form-control" id="select">
                   @forelse ($category as $value)
                   <option   value="{{$value->id}}">{{$value->name}}</option>
-                  @empty
-                      
+                  @empty     
                   @endforelse
               </select >
               @else

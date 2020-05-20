@@ -32,6 +32,9 @@
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.css') }}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    {{-- charts.js --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
     {{-- <!-- Scripts fontawesome-->
     <script src="https://kit.fontawesome.com/3f25439984.js" crossorigin="anonymous"></script>
     <!-- Fonts -->
@@ -187,17 +190,41 @@
              </a>
                
            </li>
+             {{-- just for Admin --}}
+             @can('view', App\User::class)
+             <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="fas fa-users"></i>
+                <p>
+                  Users
+                  <i class="fas fa-angle-left right"></i>
+                  <span class="badge badge-info right"></span>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('Users.index')}}" class="nav-link">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Users information</p>
+                  </a>
+                </li>
+                {{-- <li class="nav-item">
+                  <a href="{{route('Users_Categories')}}" class="nav-link">
+                    <i class="fas fa-lock pr-2"></i>
+                    <p>Users Categories</p>
+                  </a>
+                </li> --}}
+              </ul>
+            </li>   
+             @endcan
 
-           @can('full-primission',Auth::user())
-           <li class="nav-item">
-            <a href="{{route('Users.index')}}"  style="display:block" class="nav-link">
-              <i class="fas fa-users"></i>
-             <p class="pl-1">Users</p>
-            </a>
-              
-          </li>
-           @endcan
-           
+
+             {{-- <li class="nav-item">
+              <a href="{{route('Users.index')}}"  style="display:block" class="nav-link">
+                <i class="fas fa-users"></i>
+               <p class="pl-1">Users</p>
+              </a>
+            </li> --}}
            
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -216,7 +243,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{route('WorkingCateories')}}" class="nav-link">
+                <a href="{{route('MyCategories')}}" class="nav-link">
                   <i class="fas fa-lock pr-2"></i>
                   <p>My Categories</p>
                 </a>
@@ -287,12 +314,10 @@
 
 </div> {{-- end  here --}}
 
-
-
-
-
-
-
+@isset($ProductsChart_bar)
+{{$ProductsChart_bar->script()}}
+{{$ProductsChart_pie->script()}}
+@endisset
 <!-- jQuery -->
 <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->

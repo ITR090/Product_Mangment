@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Role;
 use App\Category;
+use App\Product;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -41,6 +42,11 @@ class User extends Authenticatable
     public function roles()
     {
          return $this->belongsToMany(Role::class,'roles_users','user_id','role_id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 
     public function OwnerCategories()

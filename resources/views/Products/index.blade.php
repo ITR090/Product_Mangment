@@ -5,11 +5,12 @@
        <div>
            <ul class="nav-item">
             <div>
-            <a href="{{route('Products.create')}}" type="submit" style="display:inline-block" class="btn btn-primary">Add New Prouduct</a>
+            <a href="{{route('Products.create')}}" type="submit" style="display:inline-block" class="btn btn-primary">Add New Product</a>
           </div> </ul>
        </div>
    </div>
    <div class="container">
+     <h5 class="mb-2">Search by category</h5>
        @if (!$category->isEmpty())
        <form action="{{route('Product')}}" method="get">
         <select name="category_id" id="" class="form-control">

@@ -45,7 +45,7 @@ class CategoryPolicy
     //  هل اليوزر يملك قسم او لا
     public function view(User $User)
     {
-       if($User->OwnerCategories->isEmpty()){
+       if($User->OwnerCategories->isNotEmpty()){
            return true;
        }
     }
@@ -70,7 +70,7 @@ class CategoryPolicy
      */
     public function update(User $User, Category $Category)
     {
-        //
+        return $User->id === $Category->user_id;
     }
 
     /**
@@ -82,7 +82,7 @@ class CategoryPolicy
      */
     public function delete(User $User, Category $Category)
     {
-        //
+        return $User->id === $Category->user_id;
     }
 
     /**
