@@ -1,15 +1,10 @@
 @component('mail::message')
-# Introduction
-
-The body of your message. 
 
 <div>
-     {{$comment->content}}
+    You Have A comment In The Product {{$product->name}}
+    <br/>
+    {{$comment->content}}
 </div>
-
-@component('mail::button', ['url' => ''])
-Button Text
-@endcomponent
 
 Thanks,<br>
 {{ config('app.name') }}

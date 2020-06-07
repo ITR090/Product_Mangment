@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Comment;
+use App\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -19,9 +20,11 @@ class CommentsNotfi extends Mailable
      * @return void
      */
     public $comment;
-    public function __construct(Comment $comment)
+    public $product;
+    public function __construct(Comment $comment ,Product $product)
     {
         $this->comment=$comment;
+        $this->product=$product;
     }
 
     /**
@@ -32,7 +35,6 @@ class CommentsNotfi extends Mailable
     public function build()
     {
         $user= Auth::user()->email;
-        return $this->from($user)
-        ->markdown('emails.comments.notfi');
+        return $this->from($user)->markdown('emails.comments.notfi');
     }
 }

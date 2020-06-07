@@ -40,8 +40,8 @@ class CommentController extends Controller
      */
     public function create(Request $request)
     {
-         $requestedID =$request->query('id');
-         $request->session()->put('id', $requestedID);
+        $requestedID =$request->query('id');
+        $request->session()->put('id', $requestedID);
         return \view('Comments.create');
     }
 
@@ -53,7 +53,6 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'content' => 'required',
         ]);
@@ -64,22 +63,13 @@ class CommentController extends Controller
                         ->withInput();
         }
         if($validator->validate()){
-            $request['user_id']=Auth::user()->id;
+            $request['user_id']=Auth::user()->id; //user id for proudct
             $request['product_id']=$request->session()->get('id');
             $comment = new Comment;
-            $userProduct= Product::find($request['product_id'])->user_id;
-            $userProductEmail= User::find($userProduct)->email;
-            $theComment=$comment->create($request->all());
-            //dd($theComment);
-            Mail::to($userProductEmail)->send( new CommentsNotfi($theComment));
+            $userProductEmail= User::find(Product::find($request['product_id'])->user_id)->email;
+            Mail::to($userProductEmail)->send( new CommentsNotfi($comment->create($request->all()),Product::find($request['product_id'])));
             return \redirect()->back();
-        }
-        // $request->validate([
-
-        // ]);
-        // $value = $request->session()->get('id');
-        // dd($value);
-       
+        }      
     }
 
     /**

@@ -39,7 +39,7 @@
        @enderror
           </div>
     <div class="form-group">
-        <label for="select">Category Name: </label> <small class="text-warning">{{$Product->category->name}}</small>
+        <label for="select">Category Name: </label> <p  class="d-inline text-warning">{{$Product->category->name}}</p>
         <select required name='category_id' class="form-control" id="select">
             @forelse ($category as $key => $name)
             <option   value="{{$key}}">{{$name}}</option>

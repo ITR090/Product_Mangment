@@ -63,12 +63,13 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required|file|image|mimes:png,jpeg|max:1999',
+            'image' => 'file|image|mimes:png,jpeg|max:1999',
             'priec' => 'required',
             'category_id' => 'required',
         ]);
        
-        // get file name with ext
+        if($request->file('image')){
+             // get file name with ext
         $fileNameWithExt = $request->file('image')->getClientOriginalName();
         
         //get just file name
@@ -81,6 +82,8 @@ class ProductController extends Controller
         $request->file('image')->storeAs('Images', $fileNameToStore, 'public');
         // store file with aother data
         $request['imege'] = $fileNameToStore;
+        }
+
         $request['user_id'] = Auth::user()->id;
         $product = new Product;
         $product->create($request->all());

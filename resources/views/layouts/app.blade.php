@@ -133,11 +133,11 @@
         </div> --}}
         <div class="info">
         <a href="" class="d-block">
-          <span class="d-block" style="text-align: center">
+    <div class="d-flex justify-content-center align-items-center">
             @isset(Auth::user()->name)
-            Name : {{Auth::user()->name}}
+            <div style="text-align: center"><i class="fas fa-user-tie pr-2"></i>  {{Auth::user()->name}}</div>
            @endisset
-    </span>
+    </div>
         </a>
         </div>
       </div>

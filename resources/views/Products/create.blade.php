@@ -22,7 +22,7 @@
           </div>
           <div class="form-group">
               <label for="image">Imege of Product</label>
-              <input required type="file" id='image' name="image" class="form-control" placeholder="imege of Product">
+              <input type="file" id='image' name="image" class="form-control" placeholder="imege of Product">
               @error('image')
               <div class="alert alert-danger mt-2">{{ $message }}</div>
           @enderror
