@@ -1,1 +1,1 @@
-![home image] (pm_imge_home.png)
+![home image] (/pm_imge_home.png)
