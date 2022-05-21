@@ -11,16 +11,16 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
-        Category::create([
-            'name'=>'Phones'
-        ]);
-        Category::create([
-            'name'=>'Mens clothing'
-        ]);
+        // Category::create([
+        //     'name'=>'Phones'
+        // ]);
+        // Category::create([
+        //     'name'=>'Mens clothing'
+        // ]);
 
-        Category::create([
-            'name'=>'Womens clothing'
-        ]);
+        // Category::create([
+        //     'name'=>'Womens clothing'
+        // ]);
 
 
     }
